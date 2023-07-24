@@ -1,0 +1,34 @@
+// This source code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
+// © vijansoni
+
+//@version=5
+strategy( overlay = false, title = "vwap indicator")
+Myvwap = ta.vwap
+Myswma = ta.swma(close)
+plot(Myvwap, color = color.black, linewidth = 4)
+//plot(close)
+vwap_compare = Myvwap < close 
+swma_compare = Myswma > close 
+// compares closing price with vwap and swma and colors based on that
+//bgcolor(vwap_compare ? color.new(color.orange, transp = 50): na)
+//bgcolor(swma_compare ? color.blue : na)
+
+// strategy = if swma indicator gives buy signal and then is confirmed by 
+// vwap confirms the long buy signal
+trigger_buy = vwap_compare and not vwap_compare[1] and not swma_compare and not  swma_compare[1]
+//bgcolor(trigger_buy ?  color.purple : na)
+// generates trigger singal based on vwap
+check_long = false
+check_long := trigger_buy ? true : not vwap_compare ? false : check_long[1]
+// check_long continues to be purple once trigger_buy is purple and continues
+// to be purple till vwap is false
+//bgcolor(check_long ? color.navy : na)
+confirm_long = check_long and swma_compare
+bgcolor(confirm_long ? color.blue : na)
+
+// backtest
+if confirm_long == true 
+    strategy.entry("open long", strategy.long, 100)
+stoploss = input.float( 250, "Stop in ticks", step = 50)
+takeprofit = input.float(250, "risk/reward ratio")*stoploss
+strategy.exit("short close","open long", profit = takeprofit, loss = stoploss)
