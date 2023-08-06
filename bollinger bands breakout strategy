@@ -1,0 +1,67 @@
+// This source code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
+// © vijansoni
+
+//@version=5
+//initial_capital = input.float(100000, title = "initial capital",minval = 10000)
+strategy("BB Breakout strategy", overlay=true, shorttitle = "Bollinger Bands Breakout Strategy", pyramiding=2, currency=currency.INR , 
+             initial_capital = 100000, default_qty_type = strategy.cash, 
+             default_qty_value=50000)
+
+// Input Parameters
+sourceOHLC = input(close, title = "open/high/low/close")
+smaLength = input.int(20, title = "SMA length",minval =  5)
+deviation = input.float(1, title = "standard deviation",minval = 0.236)
+
+// Calculate Bollinger Bands
+sma = ta.sma(sourceOHLC, smaLength)
+dev = ta.stdev(sourceOHLC, smaLength)
+upperBand = sma + dev * deviation
+lowerBand = sma - dev * deviation
+short       = sourceOHLC<lowerBand// and rsi(close,14)<40
+long        = sourceOHLC>upperBand// and rsi(close,14)>60
+
+L1          = ta.barssince(long)
+S1          = ta.barssince(short)
+
+longSignal  = L1<S1 and not (L1<S1)[1]
+shortSignal = S1<L1 and not (S1<L1)[1]
+
+// Plot Bollinger Bands
+plot(sma, color=color.blue, title="SMA")
+plot(upperBand, color=color.red, title="Upper Band")
+plot(lowerBand, color=color.green, title="Lower Band")
+//fill( upperBand,  lowerBand, color=color.new(color.blue, 80), title="Bollinger Band Area")
+
+// Buy and Sell Signals
+//isBuySignal = ta.crossover(sourceOHLC, upperBand)
+//isSellSignal = ta.crossunder(sourceOHLC, lowerBand)
+
+// Plot Buy and Sell Signals
+plotshape(longSignal, style=shape.triangleup, location=location.belowbar, color=color.green, title="Buy Signal")
+plotshape(shortSignal, style=shape.triangledown, location=location.abovebar, color=color.red, title="Sell Signal")
+
+if longSignal
+    strategy.entry("Long", strategy.long, qty=50000)
+
+if shortSignal
+    strategy.entry("Short", strategy.short, qty=50000)
+
+// Fibonacci Function
+fibonacciLevel(src, startPrice, endPrice) =>
+    diff = math.abs(endPrice - startPrice)
+    level = src < startPrice ? startPrice - diff : startPrice + diff
+    level
+
+riskRewardRatio = 0.33
+
+// Exit Long Position with Fibonacci-based Stop Loss and Risk-Reward Take Profit
+if strategy.position_size > 0
+    takeProfitPriceLong = strategy.position_avg_price * (1 + riskRewardRatio)
+    stopLossPriceLong = fibonacciLevel(strategy.position_avg_price, takeProfitPriceLong, lowerBand)
+    strategy.exit("Exit Long", "Long", limit=takeProfitPriceLong, stop=stopLossPriceLong)
+
+// Exit Short Position with Fibonacci-based Stop Loss and Risk-Reward Take Profit
+if strategy.position_size < 0
+    takeProfitPriceShort = strategy.position_avg_price * (1 - riskRewardRatio)
+    stopLossPriceShort = fibonacciLevel(strategy.position_avg_price, takeProfitPriceShort, upperBand)
+    strategy.exit("Exit Short", "Short", limit=takeProfitPriceShort, stop=stopLossPriceShort)
