@@ -1,0 +1,108 @@
+// This source code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
+// © vijansoni
+
+//@version=5
+//initial_capital = input.int(10000000, title = "Initial Capital", minval = 10000)
+risk_reward_ratio = input.float(3, "risk reward ratio")
+select_ohlc = input(close, "open/high/low/close")
+strategy("momentum trading strategy", overlay=false,initial_capital =  10000000,slippage = 2, pyramiding = 2,commission_type = strategy.commission.cash_per_order, commission_value = 3)
+
+
+//adx 
+adxPeriod = input.int(20,title = "manual period", minval = 1 )
+[diplus, diminus, adx] = ta.dmi(adxPeriod, 14)
+//plot(adx, color=color.red, title="ADX")
+trending_market = adx > 30
+sideways_market = adx <= 30
+bgcolor(trending_market ? color.rgb(177, 223, 178) : color.rgb(246, 170, 170) )
+
+
+
+//macd
+[macd_line, signal_line, hist_line] = ta.macd(close, 12, 26, 9)
+macd_histogram_color = macd_line > signal_line ? color.green : color.red
+
+//plot(macd_line-signal_line, title = "MACD hist", color = macd_histogram_color, style= plot.style_histogram)
+//plot(signal_line, title="Signal Line", color=color.blue)
+//plot(macd_line, title="MACD Line", color=color.rgb(50, 48, 35))
+entrylong_macd = ta.crossover(macd_line, signal_line)
+entryshort_macd = ta.crossover(signal_line, macd_line)
+
+//rsi
+rsi_len = ta.rsi(close, 14)
+overboughtLevel = 70
+oversoldLevel = 30
+hline(overboughtLevel, "Overbought", color=color.red)
+hline(oversoldLevel, "Oversold", color=color.green)
+
+// Generate Buy and Sell Signals
+//rsiCrossAbove = ta.crossover(rsiValue, oversoldLevel)
+//rsiCrossBelow = ta.crossunder(rsiValue, overboughtLevel)
+entrylong_rsi = rsi_len < oversoldLevel
+entryshort_rsi = rsi_len > overboughtLevel
+
+//plot(rsi_len,title = "RSI", color = color.fuchsia)
+
+
+//parabolic sar 
+para_SAR = ta.sar(0.02,0.02,0.2)
+trendUp = para_SAR < close 
+trendDown = para_SAR > close 
+
+//parabolic sar entry 
+entrylong_sar =  trendUp and trendUp[1] and trendUp[2]
+entryshort_sar =  trendDown and trendDown[1] and trendDown[2]
+
+
+plotshape(trendUp, style=shape.arrowup, location=location.belowbar, color=color.green, size=size.small)
+plotshape(trendDown, style=shape.arrowdown, location=location.abovebar, color=color.red, size=size.small)
+  
+// Strategy Entry
+//if (not na(vrsi))
+//	if (inDateRange and MACDcrossover and RSIunder)
+//		strategy.entry("LONG", strategy.long, comment="LONG")
+//	if (inDateRange and MACDcrossunder and RSIover)
+//		strategy.entry("SHORT", strategy.short, comment="SHORT")
+
+//stop loss 
+atr_len = ta.atr(14)
+atr_multiplier = 3
+stop_loss = close - (atr_len * atr_multiplier)
+
+//position sizing 
+risk_per_trade_perc = 1 
+entry_price = strategy.position_avg_price
+risk_per_trade = risk_per_trade_perc*strategy.initial_capital/100
+position_size = math.max(risk_per_trade/(entry_price - stop_loss),1)
+plot(entry_price, title="Entry Price", color=color.blue, style=plot.style_stepline, linewidth=2)
+
+//Backtest date range
+//StartDate = input.time(timestamp("13 Jun 2022"), title="Start Date")
+//EndDate = input.time(timestamp("13 Jun 2024"), title="Start Date")
+//inDateRange = (time >= StartDate) and (time < EndDate)
+
+//
+
+
+//submit entry and exit orders
+entry_long_condition =  (trending_market and entrylong_macd and entrylong_rsi) or (sideways_market and entrylong_macd and entrylong_sar)
+
+entry_short_condition = (trending_market and entryshort_macd and entryshort_rsi) or (sideways_market and entryshort_macd and entryshort_sar )
+//this is because rsi doesnt work in choppy markets so we use parabolic sar in choppy market
+
+strategy.entry("Long", strategy.long, when = entry_long_condition, qty = position_size)
+strategy.entry("Short", strategy.short, when = entry_short_condition, qty = position_size)
+
+takeProfitPriceLong = strategy.position_avg_price + (strategy.position_avg_price - stop_loss) * risk_reward_ratio
+takeProfitPriceShort = strategy.position_avg_price - (stop_loss - strategy.position_avg_price) * risk_reward_ratio
+
+strategy.exit("Exit Long", "Long", limit=takeProfitPriceLong, stop=stop_loss)
+strategy.exit("Exit Short", "Short", limit=takeProfitPriceShort, stop=stop_loss)
+
+//longCondition = ta.crossover(ta.sma(close, 14), ta.sma(close, 28))
+//if (longCondition)
+//    strategy.entry("My Long Entry Id", strategy.long)
+//
+//shortCondition = ta.crossunder(ta.sma(close, 14), ta.sma(close, 28))
+// if (shortCondition)
+//   strategy.entry("My Short Entry Id", strategy.short) 
