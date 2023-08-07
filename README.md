@@ -1,7 +1,7 @@
 # SoC-Pine-script-
 
 
-Title: Building trading strategy with pine script
+Building trading strategy with pine script
 -
 
 Aim: The project aimed to provide hands-on experience in developing custom trading strategies using Pine Script language on TradingView. Pine Script is a programming language that allows traders to create custom indicators and strategies on the TradingView platform. 
@@ -9,9 +9,9 @@ Aim: The project aimed to provide hands-on experience in developing custom tradi
 Motivation: The project entailed getting an understanding of how the trading view platform works, how to read charts, using indicators, available functionalities and the final boss i.e.learning pine script to develop a comprehensive trading strategy and backtest it to see how it performs. My motivation for the project was to study if the indicators work the way we intend them to, add a little bit of coding to my arsenal and have a productive summers.
 
 Description: I started with exploring the platform and pine script, read a bunch of articles, got my hands on some frisky shortcuts, some websites that i referred to can be found here: 
-//[Quantifiedstrategies](https://www.quantifiedstrategies.com/trading-strategies/)
-//[Algotrading101](https://algotrading101.com/learn/pine-script-tradingview-guide/#:~:text=Pine%20script%20was%20designed%20to,up%20quickly%20and%20notice%20similarities.)
-//[Tradingcode](https://www.tradingcode.net/tradingview-pine-script-course/)
+// [Quantifiedstrategies](https://www.quantifiedstrategies.com/trading-strategies/)
+// [Algotrading101](https://algotrading101.com/learn/pine-script-tradingview-guide/#:~:text=Pine%20script%20was%20designed%20to,up%20quickly%20and%20notice%20similarities.)
+// [Tradingcode](https://www.tradingcode.net/tradingview-pine-script-course/)
 // And a bunch of youtube tutorials are also helpful 
 
 Also fun fact, you can use indicators on other indicators to produce results in trading view
@@ -47,6 +47,7 @@ To implement it i worked on another strategy which is conventionally common but 
 Moving on, the final strategy was a build up on previous strategies and adding some additional nuances. 
 
 Swing trading strategy using MACD, RSI, ADX, ATR, Parabolic SAR
+-
 
 It was a swing trend trading strategy which captured the market trends using a combination of momentum oscillator indicator - MACD(moving average convergence divergence), momentum indicator - RSI(relative strength index), directional trend strength indicator - ADX(Average Directional Index), trailing and stop indicator - parabolic SAR(stop and reversal). The choice of these indicators were based on the following factors:-
 1)Used a combination of both lagging and leading indicators and smoothed them to remove any fakeouts (RSI is a leading indicator)
