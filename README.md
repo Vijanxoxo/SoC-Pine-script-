@@ -9,10 +9,10 @@ Aim: The project aimed to provide hands-on experience in developing custom tradi
 Motivation: The project entailed getting an understanding of how the trading view platform works, how to read charts, using indicators, available functionalities and the final boss i.e.learning pine script to develop a comprehensive trading strategy and backtest it to see how it performs. My motivation for the project was to study if the indicators work the way we intend them to, add a little bit of coding to my arsenal and have a productive summers.
 
 Description: I started with exploring the platform and pine script, read a bunch of articles, got my hands on some frisky shortcuts, some websites that i referred to can be found here: 
-[Quantifiedstrategies](https://www.quantifiedstrategies.com/trading-strategies/)
-[Algotrading101](https://algotrading101.com/learn/pine-script-tradingview-guide/#:~:text=Pine%20script%20was%20designed%20to,up%20quickly%20and%20notice%20similarities.)
-[Tradingcode](https://www.tradingcode.net/tradingview-pine-script-course/)
-And a bunch of youtube tutorials are also helpful 
+//[Quantifiedstrategies](https://www.quantifiedstrategies.com/trading-strategies/)
+//[Algotrading101](https://algotrading101.com/learn/pine-script-tradingview-guide/#:~:text=Pine%20script%20was%20designed%20to,up%20quickly%20and%20notice%20similarities.)
+//[Tradingcode](https://www.tradingcode.net/tradingview-pine-script-course/)
+// And a bunch of youtube tutorials are also helpful 
 
 Also fun fact, you can use indicators on other indicators to produce results in trading view
 Then I read about a bunch of indicators, it was a smooth ride as i had already done a little paper trading and portfolio building before. 
@@ -36,11 +36,11 @@ Breakout strategy
 - 
 
 To implement it i worked on another strategy which is conventionally common but a pretty useful one for breakout trading A breakout refers to when the price of an asset moves above a resistance area, or moves below a support area. Breakout traders commonly use bands and channels as limits and prices crossing those barriers generates trading signals. [Bollinger bands](https://www.babypips.com/learn/forex/bollinger-bands) is one of such bands which can tell us about the trend in the market and place orders. The same has been implemented my script [Bollinger Bands Breakout Strategy](bollinger_bands_breakout_strategy.txt). Some features i implemented in this strategy are: 
--You can now give source(open/high/low/close) as an input. Default has been set to close 
--You can also define sma deviation, deviation etc  
--Script plots bands and adds color between the lines
--signals are displayed on the graph 
--incorporated pyramiding(placing more than one active trade)
+1)You can now give source(open/high/low/close) as an input. Default has been set to close 
+2)You can also define sma deviation, deviation etc  
+3)Script plots bands and adds color between the lines
+4)signals are displayed on the graph 
+5)incorporated pyramiding(placing more than one active trade)
 
 
 
@@ -49,11 +49,11 @@ Moving on, the final strategy was a build up on previous strategies and adding s
 Swing trading strategy using MACD, RSI, ADX, ATR, Parabolic SAR
 
 It was a swing trend trading strategy which captured the market trends using a combination of momentum oscillator indicator - MACD(moving average convergence divergence), momentum indicator - RSI(relative strength index), directional trend strength indicator - ADX(Average Directional Index), trailing and stop indicator - parabolic SAR(stop and reversal). The choice of these indicators were based on the following factors:-
->Used a combination of both lagging and leading indicators and smoothed them to remove any fakeouts (RSI is a leading indicator)
->RSI doesnt work in choppy markets so we use parabolic SAR to confirm signals when trend is weak
->Trend strength is confirmed by ADX, a value of ADX higher than 30 indicates a trending market
->RSI and MACD are complimenting indicators 
->We use smoothed RSI to avoid false unwanted signals
+1)Used a combination of both lagging and leading indicators and smoothed them to remove any fakeouts (RSI is a leading indicator)
+2)RSI doesnt work in choppy markets so we use parabolic SAR to confirm signals when trend is weak
+3)Trend strength is confirmed by ADX, a value of ADX higher than 30 indicates a trending market
+4)RSI and MACD are complimenting indicators 
+5)We use smoothed RSI to avoid false unwanted signals
 
 The code can be found here: [Swing trading strategy](initial_swing_trading_strategy.txt)
 
@@ -68,11 +68,11 @@ The problem that i came accross was lot of articles on internet uses pine script
 
 
 This concludes my project progress, in future i wish to incorporate the following in the project:
->Risk Management: Integrate risk management techniques into your trading strategies to control and minimize potential losses.
->Backtesting and Optimization: Backtest the strategy on major macroeconomic and microeconomic events ex CoViD and see how it performs 
->Adding alerts and notifications
->Risk-adjusted Performance Metrics: Include risk-adjusted metrics like Sharpe ratio, Sortino ratio, or Calmar ratio.
->Incorporate Fundamental Data: Explore ways to incorporate fundamental data (e.g., earnings reports, economic indicators)
+1)Risk Management: Integrate risk management techniques into your trading strategies to control and minimize potential losses.
+2)Backtesting and Optimization: Backtest the strategy on major macroeconomic and microeconomic events ex CoViD and see how it performs 
+3)Adding alerts and notifications
+4)Risk-adjusted Performance Metrics: Include risk-adjusted metrics like Sharpe ratio, Sortino ratio, or Calmar ratio.
+5)Incorporate Fundamental Data: Explore ways to incorporate fundamental data (e.g., earnings reports, economic indicators)
 
 
 Thank you!
