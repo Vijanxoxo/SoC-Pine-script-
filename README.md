@@ -36,11 +36,11 @@ Breakout strategy
 - 
 
 To implement it i worked on another strategy which is conventionally common but a pretty useful one for breakout trading A breakout refers to when the price of an asset moves above a resistance area, or moves below a support area. Breakout traders commonly use bands and channels as limits and prices crossing those barriers generates trading signals. [Bollinger bands](https://www.babypips.com/learn/forex/bollinger-bands) is one of such bands which can tell us about the trend in the market and place orders. The same has been implemented my script [Bollinger Bands Breakout Strategy](bollinger_bands_breakout_strategy.txt). Some features i implemented in this strategy are: 
->You can now give source(open/high/low/close) as an input. Default has been set to close 
->You can also define sma deviation, deviation etc  
->Script plots bands and adds color between the lines
->signals are displayed on the graph 
->incorporated pyramiding(placing more than one active trade)
+-You can now give source(open/high/low/close) as an input. Default has been set to close 
+-You can also define sma deviation, deviation etc  
+-Script plots bands and adds color between the lines
+-signals are displayed on the graph 
+-incorporated pyramiding(placing more than one active trade)
 
 
 
